@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://flightsView.title">
+    <data>
+        <collection id="flightsDc" class="com.company.facets.entity.Flight">
+            <fetchPlan extends="_base"/>
+            <loader id="flightsDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Flight e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+
+<!--        <dataLoadCoordinator auto="true"/>-->
+<!--        <dataLoadCoordinator auto="false"/>-->
+
+        <!--        <dataLoadCoordinator>-->
+        <!--            <refresh loader="flightsDl">-->
+        <!--                <onViewEvent type="Ready"/>-->
+        <!--            </refresh>-->
+        <!--        </dataLoadCoordinator>-->
+
+        <dataLoadCoordinator auto="false">
+            <refresh loader="flightsDl">
+                <onComponentValueChanged component="destinationFilter"/>
+            </refresh>
+        </dataLoadCoordinator>
+    </facets>
+    <layout>
+
+        <hbox>
+            <button id="addFlightsButton" text="Add Flights" icon="FLIGHT_TAKEOFF"/>
+            <checkboxGroup
+        </hbox>
+
+        <h4 text="Number of items in the CollectionContainer"/>
+        <div classNames="flex flex-row flex-wrap gap-s">
+            <icon icon="HAMMER"/>
+            <span text="onInit event:"/>
+            <span id="onInitItemCount"/>
+        </div>
+        <div classNames="flex flex-row flex-wrap gap-s">
+            <icon icon="BROWSER"/>
+            <span text="onBeforeShow event:"/>
+            <span id="onBeforeShowItemCount"/>
+        </div>
+        <div classNames="flex flex-row flex-wrap gap-s">
+            <icon icon="CHECK"/>
+            <span text="onReady event:"/>
+            <span id="onReadyItemCount"/>
+        </div>
+        <dataGrid id="flightsDataGrid" dataContainer="flightsDc" minWidth="100px" width="100%">
+            <actions>
+                <action id="create" type="list_create"/>
+                <action id="edit" type="list_edit"/>
+                <action id="remove" type="list_remove"/>
+            </actions>
+            <columns>
+                <column property="flightNumber"/>
+                <column property="destination"/>
+            </columns>
+        </dataGrid>
+    </layout>
+</view>
