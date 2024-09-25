@@ -24,12 +24,12 @@ public class Flight {
     @Column(name = "DESTINATION")
     private String destination;
 
-    public String getDestination() {
-        return destination;
+    public Destinations getDestination() {
+        return destination == null ? null : Destinations.fromId(destination);
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setDestination(Destinations destination) {
+        this.destination = destination == null ? null : destination.getId();
     }
 
     public String getFlightNumber() {

@@ -1,13 +1,12 @@
 package com.company.facets.app;
 
+import com.company.facets.entity.Destinations;
 import com.company.facets.entity.Flight;
 import io.jmix.core.DataManager;
 import io.jmix.core.EntitySet;
 import io.jmix.core.SaveContext;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -22,35 +21,30 @@ public class FlightsService {
         this.dataManager = dataManager;
     }
 
-    // Method to generate flight numbers
+    private final Random random = new Random();
+
+
+
+    // Method to generate random flight numbers
     private List<String> generateFlightNumbers() {
-        // Example implementation for generating flight numbers
-        return IntStream.range(0, 10)
+        return IntStream.range(0, 7)
                 .mapToObj(i -> "FL" + RandomStringUtils.randomNumeric(3) + RandomStringUtils.randomAlphabetic(2).toUpperCase())
                 .collect(Collectors.toList());
-    }
-
-    // Method to generate flight destinations
-    private List<String> generateFlightDestinations() {
-        // Example implementation for generating flight destinations
-        return List.of("London", "Berlin", "New Delhi", "Dallas", "Beijing", "Paris", "Canberra", "Ottawa", "Cairo", "Rome");
     }
 
     // Method to generate flights information
     public int generateFlights() {
         List<String> flightNumbers = generateFlightNumbers();
-        List<String> flightDestinations = generateFlightDestinations();
 
-        // Ensure both lists have the same size
-        if (flightNumbers.size() != flightDestinations.size()) {
-            throw new IllegalArgumentException("Flight numbers and destinations must have the same number of elements.");
+        if (flightNumbers.isEmpty()) {
+            throw new IllegalArgumentException("Flight numbers must have at least one element.");
         }
 
         List<Flight> flights = IntStream.range(0, flightNumbers.size())
                 .mapToObj(i -> {
                     Flight flight = dataManager.create(Flight.class);
                     flight.setFlightNumber(flightNumbers.get(i)); // Set the flight number
-                    flight.setDestination(flightDestinations.get(i)); // Set the destination
+                    flight.setDestination(getRandomDestination()); // Set a random destination from the enum
                     return flight;
                 })
                 .collect(Collectors.toList());
@@ -60,4 +54,9 @@ public class FlightsService {
         return entitySet.size();
     }
 
+    // Method to get a random destination from the FlightDestination enum
+    private Destinations getRandomDestination() {
+        Destinations[] destinations = Destinations.values();
+        return destinations[random.nextInt(destinations.length)];
+    }
 }
