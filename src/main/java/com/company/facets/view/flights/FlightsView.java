@@ -67,6 +67,6 @@ public class FlightsView extends StandardView {
     @Subscribe("timer")
     public void onTimerTimerAction(final Timer.TimerActionEvent event) {
         flightsDl.load();
-        notifications.create("Timer tics", "Flights refreshed").show();
+        notifications.create("Timer tics...", "Flights refreshed").show();
     }
 }
