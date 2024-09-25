@@ -17,8 +17,8 @@
         </collection>
     </data>
     <facets>
-<!--        <dataLoadCoordinator auto="true"/>-->
-        <dataLoadCoordinator auto="false"/>
+        <dataLoadCoordinator auto="true"/>
+<!--        <dataLoadCoordinator auto="false"/>-->
 <!--                <dataLoadCoordinator>-->
 <!--                    <refresh loader="flightsDl">-->
 <!--                        <onViewEvent type="Ready"/>-->
@@ -29,6 +29,13 @@
 <!--                        <onComponentValueChanged component="destinationComboBox" param="destination"/>-->
 <!--                    </refresh>-->
 <!--                </dataLoadCoordinator>-->
+        <timer id="timer" delay="10000" autostart="true" repeating="true"/>
+        <urlQueryParameters>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+        <settings>
+            <component id="flightsDataGrid"/>
+        </settings>
     </facets>
     <layout>
         <hbox>
@@ -55,7 +62,11 @@
             <span text="onReady event:"/>
             <span id="onReadyItemCount"/>
         </div>
-        <dataGrid id="flightsDataGrid" dataContainer="flightsDc" minWidth="100px" width="100%">
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <simplePagination id="pagination" dataLoader="flightsDl" itemsPerPageItems="20"/>
+        </hbox>
+        <dataGrid id="flightsDataGrid" dataContainer="flightsDc" minWidth="100px" width="100%"
+                  columnReorderingAllowed="true">
             <actions>
                 <action id="create" type="list_create"/>
                 <action id="edit" type="list_edit"/>

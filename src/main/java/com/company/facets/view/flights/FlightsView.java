@@ -11,6 +11,7 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.router.Route;
 import io.jmix.flowui.Notifications;
 import io.jmix.flowui.component.combobox.JmixComboBox;
+import io.jmix.flowui.facet.Timer;
 import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
@@ -46,7 +47,8 @@ public class FlightsView extends StandardView {
         destinationComboBox.addValueChangeListener(e -> {
             if (e.getValue() != null) {
                 flightsDl.setParameter("destination", e.getValue());
-                flightsDl.load();
+//                Load flights explicitly to the container
+//                flightsDl.load();
             }
         });
 
@@ -73,5 +75,11 @@ public class FlightsView extends StandardView {
         notifications.create("Generated " + flightsImported + " new flights")
                 .withThemeVariant(NotificationVariant.LUMO_SUCCESS)
                 .show();
+    }
+
+    @Subscribe("timer")
+    public void onTimerTimerAction(final Timer.TimerActionEvent event) {
+        flightsDl.load();
+        notifications.create("Timer tics", "Flights refreshed").show();
     }
 }
