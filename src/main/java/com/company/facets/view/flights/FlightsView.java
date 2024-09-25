@@ -2,7 +2,6 @@ package com.company.facets.view.flights;
 
 
 import com.company.facets.app.FlightsService;
-import com.company.facets.entity.Destinations;
 import com.company.facets.entity.Flight;
 import com.company.facets.view.main.MainView;
 import com.vaadin.flow.component.ClickEvent;
@@ -10,7 +9,6 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.router.Route;
 import io.jmix.flowui.Notifications;
-import io.jmix.flowui.component.combobox.JmixComboBox;
 import io.jmix.flowui.facet.Timer;
 import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.model.CollectionContainer;
@@ -38,20 +36,9 @@ public class FlightsView extends StandardView {
     private CollectionLoader<Flight> flightsDl;
     @ViewComponent
     private CollectionContainer<Flight> flightsDc;
-    @ViewComponent
-    private JmixComboBox<Destinations> destinationComboBox;
 
     @Subscribe
     public void onInit(InitEvent event) {
-
-        destinationComboBox.addValueChangeListener(e -> {
-            if (e.getValue() != null) {
-                flightsDl.setParameter("destination", e.getValue());
-//                Load flights explicitly to the container
-//                flightsDl.load();
-            }
-        });
-
         onInitItemCount.setText(String.valueOf(flightsDc.getItems().size()));
     }
 

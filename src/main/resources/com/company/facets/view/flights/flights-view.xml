@@ -17,18 +17,18 @@
         </collection>
     </data>
     <facets>
-        <dataLoadCoordinator auto="true"/>
+<!--        <dataLoadCoordinator auto="true"/>-->
 <!--        <dataLoadCoordinator auto="false"/>-->
 <!--                <dataLoadCoordinator>-->
 <!--                    <refresh loader="flightsDl">-->
 <!--                        <onViewEvent type="Ready"/>-->
 <!--                    </refresh>-->
 <!--                </dataLoadCoordinator>-->
-<!--                <dataLoadCoordinator auto="false">-->
-<!--                    <refresh loader="flightsDl">-->
-<!--                        <onComponentValueChanged component="destinationComboBox" param="destination"/>-->
-<!--                    </refresh>-->
-<!--                </dataLoadCoordinator>-->
+                <dataLoadCoordinator auto="false">
+                    <refresh loader="flightsDl">
+                        <onComponentValueChanged component="destinationComboBox" param="destination"/>
+                    </refresh>
+                </dataLoadCoordinator>
         <timer id="timer" delay="10000" autostart="true" repeating="true"/>
         <urlQueryParameters>
             <pagination component="pagination"/>
