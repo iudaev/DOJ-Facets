@@ -20,18 +20,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ViewController("FlightsView")
 @ViewDescriptor("flights-view.xml")
 public class FlightsView extends StandardView {
+
     @Autowired
     private FlightsService flightsService;
     @Autowired
     private Notifications notifications;
 
-
     @ViewComponent
-    protected Span onInitItemCount;
+    private Span onInitItemCount;
     @ViewComponent
-    protected Span onBeforeShowItemCount;
+    private Span onBeforeShowItemCount;
     @ViewComponent
-    protected Span onReadyItemCount;
+    private Span onReadyItemCount;
     @ViewComponent
     private CollectionLoader<Flight> flightsDl;
     @ViewComponent
@@ -67,6 +67,6 @@ public class FlightsView extends StandardView {
     @Subscribe("timer")
     public void onTimerTimerAction(final Timer.TimerActionEvent event) {
         flightsDl.load();
-        notifications.create("Timer tics...", "Flights refreshed").show();
+        notifications.show("Timer tics...", "Flights refreshed");
     }
 }
