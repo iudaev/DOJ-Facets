@@ -1,16 +1,17 @@
 package com.company.facets.entity;
 
+import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
 @JmixEntity
-@Table(name = "FLIGHT")
+@Table(name = "FLIGHT", indexes = {
+        @Index(name = "IDX_FLIGHT_TERMINAL", columnList = "TERMINAL_ID")
+})
 @Entity
 public class Flight {
     @JmixGeneratedValue
@@ -23,6 +24,19 @@ public class Flight {
 
     @Column(name = "DESTINATION")
     private String destination;
+
+    @OnDeleteInverse(DeletePolicy.CASCADE)
+    @JoinColumn(name = "TERMINAL_ID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Terminal terminal;
+
+    public Terminal getTerminal() {
+        return terminal;
+    }
+
+    public void setTerminal(Terminal terminal) {
+        this.terminal = terminal;
+    }
 
     public Destinations getDestination() {
         return destination == null ? null : Destinations.fromId(destination);

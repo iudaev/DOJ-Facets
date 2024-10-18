@@ -56,7 +56,7 @@ public class FlightsView extends StandardView {
     public void onAddFlightsButtonClick(final ClickEvent<JmixButton> event) {
         int flightsImported = flightsService.generateFlights();
 
-        //Load flights explicitly to the container
+//        Load flights explicitly to the container
 //        flightsDl.load();
 
         notifications.create("Generated " + flightsImported + " new flights")
@@ -64,9 +64,9 @@ public class FlightsView extends StandardView {
                 .show();
     }
 
-    @Subscribe("timer")
-    public void onTimerTimerAction(final Timer.TimerActionEvent event) {
-        flightsDl.load();
-        notifications.show("Timer tics...", "Flights refreshed");
-    }
+//    @Subscribe("timer")
+//    public void onTimerTimerAction(final Timer.TimerActionEvent event) {
+//        flightsDl.load();
+//        notifications.show("Timer tics...", "Flights refreshed");
+//    }
 }

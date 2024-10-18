@@ -2,14 +2,24 @@
 <view xmlns="http://jmix.io/schema/flowui/view"
       title="msg://flightsView.title">
     <data>
-        <collection id="flightsDc" class="com.company.facets.entity.Flight">
+        <collection id="terminalsDc" class="com.company.facets.entity.Terminal">
+            <loader id="terminalsDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Terminal e]]>
+                </query>
+            </loader>
             <fetchPlan extends="_base"/>
+        </collection>
+        <collection id="flightsDc" class="com.company.facets.entity.Flight">
+            <fetchPlan extends="_base">
+                <property name="terminal" fetchPlan="_base"/>
+            </fetchPlan>
             <loader id="flightsDl" readOnly="true">
                 <query>
-                    <![CDATA[select e from Flight e]]>
+                    <![CDATA[select e from Flight e where e.terminal = :container_terminalsDc]]>
                     <condition>
                             <jpql>
-                                <where>e.destination = :destination</where>
+                                <where>e.destination = :component_destinationComboBox</where>
                             </jpql>
                     </condition>
                 </query>
@@ -17,29 +27,16 @@
         </collection>
     </data>
     <facets>
-<!--        <dataLoadCoordinator auto="true"/>-->
-<!--        <dataLoadCoordinator auto="false"/>-->
-<!--                <dataLoadCoordinator>-->
-<!--                    <refresh loader="flightsDl">-->
-<!--                        <onViewEvent type="Ready"/>-->
-<!--                    </refresh>-->
-<!--                </dataLoadCoordinator>-->
-                <dataLoadCoordinator auto="false">
-                    <refresh loader="flightsDl">
-                        <onComponentValueChanged component="destinationComboBox" param="destination"/>
-                    </refresh>
-                </dataLoadCoordinator>
-        <timer id="timer" delay="10000" autostart="true" repeating="true"/>
-        <urlQueryParameters>
-            <pagination component="pagination"/>
-        </urlQueryParameters>
-        <settings>
-            <component id="flightsDataGrid"/>
-        </settings>
+        <dataLoadCoordinator auto="true"/>
     </facets>
     <layout>
-        <hbox>
             <button id="addFlightsButton" text="Add Flights" icon="FLIGHT_TAKEOFF"/>
+        <hbox>
+            <entityComboBox id="terminalsComboBox" itemsContainer="terminalsDc" metaClass="Terminal">
+                <actions>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityComboBox>
             <comboBox id="destinationComboBox"
                       dataContainer="flightsDc"
                       property="destination"
@@ -66,7 +63,7 @@
             <simplePagination id="pagination" dataLoader="flightsDl" itemsPerPageItems="20"/>
         </hbox>
         <dataGrid id="flightsDataGrid" dataContainer="flightsDc" minWidth="100px" width="100%"
-                  columnReorderingAllowed="true">
+                  columnReorderingAllowed="true" selectionMode="NONE">
             <actions>
                 <action id="create" type="list_create"/>
                 <action id="edit" type="list_edit"/>
@@ -75,6 +72,7 @@
             <columns>
                 <column property="flightNumber"/>
                 <column property="destination"/>
+                <column property="terminal"/>
             </columns>
         </dataGrid>
     </layout>
